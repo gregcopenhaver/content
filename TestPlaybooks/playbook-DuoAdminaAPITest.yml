@@ -1,0 +1,840 @@
+id: 4013cce7-9e35-4838-8d93-409ce485af71
+version: 60
+name: DuoAdmin API test playbook
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: 6a888fc9-93a6-4129-887a-62968de5ff46
+    type: start
+    task:
+      id: 6a888fc9-93a6-4129-887a-62968de5ff46
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "13"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -160
+        }
+      }
+    note: false
+    timertriggers: []
+  "1":
+    id: "1"
+    taskid: f9ccd2fa-622d-4545-8ba6-e1157765f912
+    type: regular
+    task:
+      id: f9ccd2fa-622d-4545-8ba6-e1157765f912
+      version: -1
+      name: Get Users Detail
+      script: '|||duoadmin-get-users'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "16"
+      - "17"
+      - "19"
+      - "30"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 120
+        }
+      }
+    note: false
+    timertriggers: []
+  "3":
+    id: "3"
+    taskid: add10b21-f3e9-4750-833b-8f728986d3b8
+    type: regular
+    task:
+      id: add10b21-f3e9-4750-833b-8f728986d3b8
+      version: -1
+      name: Get User Logs
+      script: '|||duoadmin-get-authentication-logs-by-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "15"
+    scriptarguments:
+      from:
+        simple: 10_years_ago
+      username:
+        simple: guy@lichtman.io
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 470
+        }
+      }
+    note: false
+    timertriggers: []
+  "9":
+    id: "9"
+    taskid: 432cc8c0-0ce9-4d39-81d3-55a96395ce81
+    type: title
+    task:
+      id: 432cc8c0-0ce9-4d39-81d3-55a96395ce81
+      version: -1
+      name: Done
+      type: title
+      iscommand: false
+      brand: ""
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1500
+        }
+      }
+    note: false
+    timertriggers: []
+  "13":
+    id: "13"
+    taskid: c8e66bc4-5dc3-4a54-81ea-35d59ffcda74
+    type: regular
+    task:
+      id: c8e66bc4-5dc3-4a54-81ea-35d59ffcda74
+      version: -1
+      name: Delete Context
+      scriptName: DeleteContext
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "1"
+    scriptarguments:
+      all:
+        simple: "yes"
+      index: {}
+      key: {}
+      keysToKeep: {}
+      subplaybook: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -40
+        }
+      }
+    note: false
+    timertriggers: []
+  "15":
+    id: "15"
+    taskid: e4ef4b51-2a56-4393-843d-7e7851fe3d5f
+    type: condition
+    task:
+      id: e4ef4b51-2a56-4393-843d-7e7851fe3d5f
+      version: -1
+      name: Are auth logs a part of user details?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "9"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: UserDetails
+                transformers:
+                - operator: WhereFieldEquals
+                  args:
+                    equalTo:
+                      value:
+                        simple: guy@lichtman.io
+                    field:
+                      value:
+                        simple: username
+                    getField: {}
+                - operator: getField
+                  args:
+                    field:
+                      value:
+                        simple: auth_logs
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 910
+        }
+      }
+    note: false
+    timertriggers: []
+  "16":
+    id: "16"
+    taskid: 0235dc04-d515-4740-8b99-50bf6f2257ff
+    type: title
+    task:
+      id: 0235dc04-d515-4740-8b99-50bf6f2257ff
+      version: -1
+      name: User Devices Operations
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "22"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 315
+        }
+      }
+    note: false
+    timertriggers: []
+  "17":
+    id: "17"
+    taskid: 6fb30918-25a9-4734-812a-881e1ca10c57
+    type: title
+    task:
+      id: 6fb30918-25a9-4734-812a-881e1ca10c57
+      version: -1
+      name: User Logs
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "3"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 315
+        }
+      }
+    note: false
+    timertriggers: []
+  "19":
+    id: "19"
+    taskid: 02196f89-d2df-4a4b-8f1c-ab0ab9baabad
+    type: title
+    task:
+      id: 02196f89-d2df-4a4b-8f1c-ab0ab9baabad
+      version: -1
+      name: Devices
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "20"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 315
+        }
+      }
+    note: false
+    timertriggers: []
+  "20":
+    id: "20"
+    taskid: 847e658b-b599-41a8-871e-c20098a59584
+    type: regular
+    task:
+      id: 847e658b-b599-41a8-871e-c20098a59584
+      version: -1
+      name: Get All Devices
+      script: '|||duoadmin-get-devices'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "21"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 470
+        }
+      }
+    note: false
+    timertriggers: []
+  "21":
+    id: "21"
+    taskid: fbb5871b-38cc-4396-8f3a-dfe025100941
+    type: condition
+    task:
+      id: fbb5871b-38cc-4396-8f3a-dfe025100941
+      version: -1
+      name: Are phones a part of the DuoAdmin object?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "9"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: Phones.phone_id
+            iscontext: true
+      - - operator: isExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: Phones.number
+            iscontext: true
+      - - operator: isExists
+          left:
+            value:
+              simple: DuoAdmin.Phones.platform
+            iscontext: true
+      - - operator: isExists
+          left:
+            value:
+              simple: DuoAdmin.Phones.last_seen
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 920
+        }
+      }
+    note: false
+    timertriggers: []
+  "22":
+    id: "22"
+    taskid: 0bafc87b-04ed-4ff1-8336-e92a3e54e4f2
+    type: regular
+    task:
+      id: 0bafc87b-04ed-4ff1-8336-e92a3e54e4f2
+      version: -1
+      name: Associate a dummy phone
+      script: '|||duoadmin-associate-device-to-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "23"
+    scriptarguments:
+      device_Id:
+        complex:
+          root: DuoAdmin
+          filters:
+          - - operator: isEqualString
+              left:
+                value:
+                  simple: DuoAdmin.UserDetails.username
+                iscontext: true
+              right:
+                value:
+                  simple: guy@lichtman.io
+          accessor: UserDetails.phones.phone_id
+      device_id:
+        simple: DPQ5YSXIRTLG4QO561J9
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 470
+        }
+      }
+    note: false
+    timertriggers: []
+  "23":
+    id: "23"
+    taskid: 0a0c85f6-4300-4afa-8d2f-2900fd12d74c
+    type: regular
+    task:
+      id: 0a0c85f6-4300-4afa-8d2f-2900fd12d74c
+      version: -1
+      name: Get User Phones
+      script: '|||duoadmin-get-devices-by-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "24"
+    scriptarguments:
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 635
+        }
+      }
+    note: false
+    timertriggers: []
+  "24":
+    id: "24"
+    taskid: f609ae1b-e98c-4cea-8506-f1ff6ea10993
+    type: condition
+    task:
+      id: f609ae1b-e98c-4cea-8506-f1ff6ea10993
+      version: -1
+      name: Does the user have a phone?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "28"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: UserDetails
+                transformers:
+                - operator: WhereFieldEquals
+                  args:
+                    equalTo:
+                      value:
+                        simple: winitzky
+                    field:
+                      value:
+                        simple: username
+                    getField: {}
+                - operator: getField
+                  args:
+                    field:
+                      value:
+                        simple: phones
+                - operator: atIndex
+                  args:
+                    index:
+                      value:
+                        simple: "0"
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 800
+        }
+      }
+    note: false
+    timertriggers: []
+  "27":
+    id: "27"
+    taskid: 32248dae-c3a7-42e4-8047-67fbd06f78eb
+    type: regular
+    task:
+      id: 32248dae-c3a7-42e4-8047-67fbd06f78eb
+      version: -1
+      name: Get User Phones
+      script: '|||duoadmin-get-devices-by-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "29"
+    scriptarguments:
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 1140
+        }
+      }
+    note: false
+    timertriggers: []
+  "28":
+    id: "28"
+    taskid: 4c455953-d0c0-48e2-83c1-1ab59568ca60
+    type: regular
+    task:
+      id: 4c455953-d0c0-48e2-83c1-1ab59568ca60
+      version: -1
+      name: Dissociate the phone from the user
+      script: '|||duoadmin-dissociate-device-from-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "27"
+    scriptarguments:
+      device_id:
+        simple: DPQ5YSXIRTLG4QO561J9
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 980
+        }
+      }
+    note: false
+    timertriggers: []
+  "29":
+    id: "29"
+    taskid: 1937d7ba-76a8-43f0-8f77-08e9bfb0337a
+    type: condition
+    task:
+      id: 1937d7ba-76a8-43f0-8f77-08e9bfb0337a
+      version: -1
+      name: Does the user still has a phone?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "no":
+      - "9"
+    separatecontext: false
+    conditions:
+    - label: "no"
+      condition:
+      - - operator: isNotExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: UserDetails
+                transformers:
+                - operator: WhereFieldEquals
+                  args:
+                    equalTo:
+                      value:
+                        simple: winitzky
+                    field:
+                      value:
+                        simple: username
+                    getField: {}
+                - operator: getField
+                  args:
+                    field:
+                      value:
+                        simple: phones
+                - operator: atIndex
+                  args:
+                    index:
+                      value:
+                        simple: "0"
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": -100,
+          "y": 1330
+        }
+      }
+    note: false
+    timertriggers: []
+  "30":
+    id: "30"
+    taskid: 568ee73f-86ef-4d18-8ffc-8288a4c2cbe8
+    type: title
+    task:
+      id: 568ee73f-86ef-4d18-8ffc-8288a4c2cbe8
+      version: -1
+      name: U2F Tokens
+      type: title
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "31"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 315
+        }
+      }
+    note: false
+    timertriggers: []
+  "31":
+    id: "31"
+    taskid: 4579a3d2-abbb-41a9-8bac-3fb46d780ccb
+    type: regular
+    task:
+      id: 4579a3d2-abbb-41a9-8bac-3fb46d780ccb
+      version: -1
+      name: Get User Tokens
+      description: |-
+        Notice that for the test to actually test something the user has to have a token assigned to it.
+        To create a "dummy token" (for tests and such) use SOFTU2F with the duo admin site (available at https://github.com/github/SoftU2F).
+        You might have to kill it's process a few times and press "approve" for it to work (about 4 or 5 times)
+      script: '|||duoadmin-get-u2f-tokens-by-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "32"
+    scriptarguments:
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 470
+        }
+      }
+    note: false
+    timertriggers: []
+  "32":
+    id: "32"
+    taskid: 08d21058-3593-422b-879a-8cec2928e9d3
+    type: condition
+    task:
+      id: 08d21058-3593-422b-879a-8cec2928e9d3
+      version: -1
+      name: Does the user have a U2F token?
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "33"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: UserDetails
+                transformers:
+                - operator: WhereFieldEquals
+                  args:
+                    equalTo:
+                      value:
+                        simple: winitzky
+                    field:
+                      value:
+                        simple: username
+                    getField: {}
+                - operator: getField
+                  args:
+                    field:
+                      value:
+                        simple: u2ftokens
+                - operator: atIndex
+                  args:
+                    index:
+                      value:
+                        simple: "0"
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 635
+        }
+      }
+    note: false
+    timertriggers: []
+  "33":
+    id: "33"
+    taskid: e7eab703-ef46-4b38-8ce9-7fea5a85f485
+    type: regular
+    task:
+      id: e7eab703-ef46-4b38-8ce9-7fea5a85f485
+      version: -1
+      name: Delete the token
+      script: '|||duoadmin-delete-u2f-token'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "35"
+    scriptarguments:
+      token_id:
+        complex:
+          root: DuoAdmin
+          accessor: UserDetails
+          transformers:
+          - operator: WhereFieldEquals
+            args:
+              equalTo:
+                value:
+                  simple: winitzky
+              field:
+                value:
+                  simple: username
+              getField: {}
+          - operator: getField
+            args:
+              field:
+                value:
+                  simple: u2ftokens
+          - operator: atIndex
+            args:
+              index:
+                value:
+                  simple: "0"
+          - operator: getField
+            args:
+              field:
+                value:
+                  simple: registration_id
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 860
+        }
+      }
+    note: false
+    timertriggers: []
+  "34":
+    id: "34"
+    taskid: 777394de-5907-4c60-8950-9e449b02a9d2
+    type: condition
+    task:
+      id: 777394de-5907-4c60-8950-9e449b02a9d2
+      version: -1
+      name: Does the user still have a token
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "no":
+      - "9"
+    separatecontext: false
+    conditions:
+    - label: "no"
+      condition:
+      - - operator: isNotExists
+          left:
+            value:
+              complex:
+                root: DuoAdmin
+                accessor: UserDetails
+                transformers:
+                - operator: WhereFieldEquals
+                  args:
+                    equalTo:
+                      value:
+                        simple: winitzky
+                    field:
+                      value:
+                        simple: username
+                    getField: {}
+                - operator: getField
+                  args:
+                    field:
+                      value:
+                        simple: u2ftokens
+                - operator: atIndex
+                  args:
+                    index:
+                      value:
+                        simple: "0"
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 1235
+        }
+      }
+    note: false
+    timertriggers: []
+  "35":
+    id: "35"
+    taskid: becf57b1-a3e5-4db8-842c-7ba39802fb95
+    type: regular
+    task:
+      id: becf57b1-a3e5-4db8-842c-7ba39802fb95
+      version: -1
+      name: Get User Tokens
+      description: |-
+        Notice that for the test to actually test something the user has to have a token assigned to it.
+        To create a "dummy token" (for tests and such) use SOFTU2F with the duo admin site (available at https://github.com/github/SoftU2F).
+        You might have to kill it's process a few times and press "approve" for it to work (about 4 or 5 times)
+      script: '|||duoadmin-get-u2f-tokens-by-user'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "34"
+    scriptarguments:
+      username:
+        simple: winitzky
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 1055
+        }
+      }
+    note: false
+    timertriggers: []
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1725,
+        "width": 1890,
+        "x": -100,
+        "y": -160
+      }
+    }
+  }
+inputs: []
+outputs: []
